@@ -4,6 +4,12 @@
 #include <WiFi.h>
 #include <Preferences.h>
 
+#if __has_include("secrets.h")
+#include "secrets.h"
+#else
+#include "secrets.example.h"
+#endif
+
 #include "rda5807m_sensor.h"
 
 // Classic Bluetooth is not supported for this ESP32-S3 target in the current Arduino core.
@@ -196,7 +202,28 @@ void configureRadioApiRoutes() {
 Preferences preferences;
 char server_ip[40];
 int server_port;
-const char* otaPassword = "lementgateway";
+
+#ifndef WIFI_SSID
+#define WIFI_SSID "YOUR_WIFI_SSID"
+#endif
+
+#ifndef WIFI_PASSWORD
+#define WIFI_PASSWORD "YOUR_WIFI_PASSWORD"
+#endif
+
+#ifndef OTA_PASSWORD
+#define OTA_PASSWORD "your-ota-password"
+#endif
+
+#ifndef SERVER_IP
+#define SERVER_IP "192.168.86.138"
+#endif
+
+#ifndef SERVER_PORT
+#define SERVER_PORT 6660
+#endif
+
+const char* otaPassword = OTA_PASSWORD;
 
 // Portal/Network details
 const byte DNS_PORT = 53;
