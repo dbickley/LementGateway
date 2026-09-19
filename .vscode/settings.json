@@ -1,0 +1,21 @@
+{
+    "files.associations": {
+        "array": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "vector": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "*.tcc": "cpp",
+        "memory": "cpp",
+        "istream": "cpp",
+        "functional": "cpp",
+        "tuple": "cpp",
+        "utility": "cpp",
+        "random": "cpp",
+        "fstream": "cpp"
+    },
+    "cmake.sourceDirectory": "/Users/david/projects/LementGateway/LementGateway/lib/Adafruit_SSD1306"
+}
