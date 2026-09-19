@@ -39,6 +39,17 @@ struct SHT20_DATA {
   bool valid = false;
 };
 
+struct MPU6500_DATA {
+  unsigned long lastSensorReadingMillis = 0;
+  float accelX = 0.0f;
+  float accelY = 0.0f;
+  float accelZ = 0.0f;
+  float gyroX = 0.0f;
+  float gyroY = 0.0f;
+  float gyroZ = 0.0f;
+  bool valid = false;
+};
+
 struct RDA5807M_DATA {
   unsigned long lastSensorReadingMillis = 0;
   bool powered = false;
@@ -79,6 +90,7 @@ struct SENSOR_DATA {
   APDS_DATA apds;
   BME280_DATA bme280;
   SHT20_DATA sht20;
+  MPU6500_DATA mpu6500;
   RDA5807M_DATA radio;
   DS18B20_DATA engineTemp;
   RCWL_DATA rcwl;

@@ -10,6 +10,7 @@
 #include "data_out.h"
 #include "ds18b20_sensor.h"
 #include "sht20_sensor.h"
+#include "mpu6500_sensor.h"
 #include "rda5807m_sensor.h"
 #include "state_event.h"
 
@@ -20,6 +21,7 @@ const int apdsUpdateSpeedMillis = 100;
 const int bmeUpdateSpeedMillis = 5000;
 const int rcwlUpdateSpeedMillis = 500;
 const int radioUpdateSpeedMillis = 2000;
+const int mpuUpdateSpeedMillis = 200;
 
 SENSOR_DATA sensor_data;
 SENSOR_DATA lastPublishedState;
@@ -52,6 +54,7 @@ void setup() {
   setupAPDS9960();
   setupBME280();
   setupSHT20();
+  setupMPU6500();
   setupDS18B20();
   setupRDA5807M();
   setupRCWL();
@@ -104,6 +107,11 @@ void loop() {
   if (currentMillis - sensor_data.sht20.lastSensorReadingMillis >= bmeUpdateSpeedMillis) {
     sensor_data.sht20 = readSHT20Values();
     sensor_data.sht20.lastSensorReadingMillis = currentMillis;
+  }
+
+  if (currentMillis - sensor_data.mpu6500.lastSensorReadingMillis >= mpuUpdateSpeedMillis) {
+    sensor_data.mpu6500 = readMPU6500Values();
+    sensor_data.mpu6500.lastSensorReadingMillis = currentMillis;
   }
 
   if (currentMillis - sensor_data.radio.lastSensorReadingMillis >= radioUpdateSpeedMillis) {

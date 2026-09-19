@@ -30,6 +30,16 @@ bool backupSensorsChanged(const SENSOR_DATA& previous, const SENSOR_DATA& curren
   }
   return false;
 }
+
+bool mpu6500Changed(const SENSOR_DATA& previous, const SENSOR_DATA& current) {
+  return previous.mpu6500.valid != current.mpu6500.valid ||
+         floatChanged(previous.mpu6500.accelX, current.mpu6500.accelX, 0.05f) ||
+         floatChanged(previous.mpu6500.accelY, current.mpu6500.accelY, 0.05f) ||
+         floatChanged(previous.mpu6500.accelZ, current.mpu6500.accelZ, 0.05f) ||
+         floatChanged(previous.mpu6500.gyroX, current.mpu6500.gyroX, 0.5f) ||
+         floatChanged(previous.mpu6500.gyroY, current.mpu6500.gyroY, 0.5f) ||
+         floatChanged(previous.mpu6500.gyroZ, current.mpu6500.gyroZ, 0.5f);
+}
 }
 
 StateEventBus::StateEventBus() : listeners{}, listenerCount(0) {}
@@ -86,6 +96,7 @@ bool sensorStateChanged(const SENSOR_DATA& previous, const SENSOR_DATA& current)
          floatChanged(previous.sht20.temperatureC, current.sht20.temperatureC, 0.2f) ||
          floatChanged(previous.sht20.humidityPercent, current.sht20.humidityPercent, 0.5f) ||
          previous.sht20.valid != current.sht20.valid ||
+         mpu6500Changed(previous, current) ||
          previous.radio.powered != current.radio.powered ||
          floatChanged(previous.radio.frequencyMHz, current.radio.frequencyMHz, 0.05f) ||
          previous.radio.volume != current.radio.volume ||
@@ -137,6 +148,16 @@ String serializeSensorState(const SENSOR_DATA& sensorData) {
   json += "\"temperatureC\":" + serializeNumber(sensorData.sht20.temperatureC) + ",";
   json += "\"humidityPercent\":" + serializeNumber(sensorData.sht20.humidityPercent) + ",";
   json += "\"valid\":" + String(sensorData.sht20.valid ? 1 : 0);
+  json += "},";
+
+  json += "\"mpu6500\":{";
+  json += "\"accelX\":" + serializeNumber(sensorData.mpu6500.accelX) + ",";
+  json += "\"accelY\":" + serializeNumber(sensorData.mpu6500.accelY) + ",";
+  json += "\"accelZ\":" + serializeNumber(sensorData.mpu6500.accelZ) + ",";
+  json += "\"gyroX\":" + serializeNumber(sensorData.mpu6500.gyroX) + ",";
+  json += "\"gyroY\":" + serializeNumber(sensorData.mpu6500.gyroY) + ",";
+  json += "\"gyroZ\":" + serializeNumber(sensorData.mpu6500.gyroZ) + ",";
+  json += "\"valid\":" + String(sensorData.mpu6500.valid ? 1 : 0);
   json += "},";
 
   json += "\"radio\":{";
